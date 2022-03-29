@@ -285,7 +285,7 @@ RealDevice::RealDevice(int x, int y) {
 	driftSlope = 0.166;	// Drift Slope(k)
 	driftConductanceZero = minConductance;	// Standard Conductance(G0)
 	driftTimeZero = 0.001;	// Standard Time(t0)
-	driftTime = 0.1; // Elapsed Time(t)
+	driftTime = 0.001; // Elapsed Time(t)
 	driftCoefZero = 0.1;	// Drift Coefficient(v0) when time = t0
 	driftCoef = 0;	// Drift Coefficient(v) when elapsed time = t
 	
