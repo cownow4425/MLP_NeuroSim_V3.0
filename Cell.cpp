@@ -406,6 +406,11 @@ void RealDevice::Write(double deltaWeightNormalized, double weight, double minWe
 	
 	/* Update for the resistance drift effect */
 	driftCoef = driftCoefZero + (driftSlope * log10(driftConductanceZero / conductanceNew));
+	if (driftCoef < 0) {
+		driftCoef = 0;
+	} else if (driftCoef > driftCoefZero) {
+		driftCoef = driftCoefZero;
+	}
 	conductanceNew = conductanceNew * pow((driftTimeZero / driftTime), driftCoef);
 	
 	if (conductanceNew > maxConductance) {
