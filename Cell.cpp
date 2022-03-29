@@ -288,6 +288,8 @@ RealDevice::RealDevice(int x, int y) {
 	driftTime = 1; // Elapsed Time(t)
 	driftCoefZero = 0.1;	// Drift Coefficient(v0) when time = t0
 	driftCoef = 0;	// Drift Coefficient(v) when elapsed time = t
+	driftSigmaCtoC = 0;
+	driftSigmaDtoD = 0;
 	
 	
 	if (nonlinearIV) {  // Currently for cross-point array only
@@ -406,12 +408,20 @@ void RealDevice::Write(double deltaWeightNormalized, double weight, double minWe
 	
 	/* Update for the resistance drift effect */
 	driftCoef = driftCoefZero + (driftSlope * log10(driftConductanceZero / conductanceNew));
+	/* C2C variation in the resistance drift effect */
+	if (driftSigmaCtoC > 0) {
+		driftSigmaCtoC *= 0.0406;	// the mean of drift coefficient = 0.0406
+		gaussian_dist_driftCtoC = new std::normal_distribution<double>(0, driftSigmaCtoC);
+		driftCoef += (*gaussian_dist_driftCtoC)(gen);
+	}
 	if (driftCoef < 0) {
 		driftCoef = 0;
 	} else if (driftCoef > driftCoefZero) {
 		driftCoef = driftCoefZero;
 	}
+	
 	conductanceNew = conductanceNew * pow((driftTimeZero / driftTime), driftCoef);
+	
 	
 	if (conductanceNew > maxConductance) {
 		conductanceNew = maxConductance;
