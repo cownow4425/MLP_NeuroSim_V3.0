@@ -258,7 +258,7 @@ void IdealDevice::Write(double deltaWeightNormalized, double weight, double minW
 /* Real Device */
 RealDevice::RealDevice(int x, int y) { 
 	this->x = x; this->y = y;	// Cell location: x (column) and y (row) start from index 0
-	maxConductance = 4.76e-6;		// Maximum cell conductance (S)
+	maxConductance = 4.762e-6;		// Maximum cell conductance (S)
 	minConductance = 0.554e-6;	// Minimum cell conductance (S)
 	avgMaxConductance = maxConductance; // Average maximum cell conductance (S)
 	avgMinConductance = minConductance; // Average minimum cell conductance (S)
@@ -282,10 +282,10 @@ RealDevice::RealDevice(int x, int y) {
 	NL = 10;    // I-V nonlinearity in write scheme (the current ratio between Vw and Vw/2), assuming for the LTP side
 	
 	/* Update for the resistance drift effect */
-	driftSlope = 0.166;	// Drift Slope(k)
+	driftSlope = 0.2;	// Drift Slope(k)
 	driftConductanceZero = minConductance;	// Standard Conductance(G0)
 	driftTimeZero = 0.001;	// Standard Time(t0)
-	driftTime = 0.001; // Elapsed Time(t)
+	driftTime = 1; // Elapsed Time(t)
 	driftCoefZero = 0.1;	// Drift Coefficient(v0) when time = t0
 	driftCoef = 0;	// Drift Coefficient(v) when elapsed time = t
 	
