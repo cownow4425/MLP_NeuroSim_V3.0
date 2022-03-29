@@ -280,6 +280,16 @@ RealDevice::RealDevice(int x, int y) {
 	resistanceAccess = 15e3;	// The resistance of transistor (Ohm) in Pseudo-crossbar array when turned ON
 	nonlinearIV = false;	// Consider I-V nonlinearity or not (Currently for cross-point array only)
 	NL = 10;    // I-V nonlinearity in write scheme (the current ratio between Vw and Vw/2), assuming for the LTP side
+	
+	/* Update for the resistance drift effect */
+	driftSlope = 0.166;	// Drift Slope(k)
+	driftConductanceZero = minConductance;	// Standard Conductance(G0)
+	driftTimeZero = 0.001;	// Standard Time(t0)
+	driftTime = 0.1; // Elapsed Time(t)
+	driftCoefZero = 0.1;	// Drift Coefficient(v0) when time = t0
+	driftCoef = 0;	// Drift Coefficient(v) when elapsed time = t
+	
+	
 	if (nonlinearIV) {  // Currently for cross-point array only
 		double Vr_exp = readVoltage;  // XXX: Modify this value to Vr in the reported measurement data (can be different than readVoltage)
 		// Calculation of conductance at on-chip Vr
@@ -315,7 +325,7 @@ RealDevice::RealDevice(int x, int y) {
 	paramALTD = getParamA(NL_LTD + (*gaussian_dist2)(localGen)) * maxNumLevelLTD;	// Parameter A for LTD nonlinearity
 
 	/* Cycle-to-cycle weight update variation */
-	sigmaCtoC = 0.1 * (maxConductance - minConductance);	// Sigma of cycle-to-cycle weight update vairation: defined as the percentage of conductance range
+	sigmaCtoC = 0.0 * (maxConductance - minConductance);	// Sigma of cycle-to-cycle weight update vairation: defined as the percentage of conductance range
 	gaussian_dist3 = new std::normal_distribution<double>(0, sigmaCtoC);    // Set up mean and stddev for cycle-to-cycle weight update vairation
 
 	/* Conductance range variation */
@@ -393,6 +403,10 @@ void RealDevice::Write(double deltaWeightNormalized, double weight, double minWe
 	if (sigmaCtoC && numPulse != 0) {
 		conductanceNew += (*gaussian_dist3)(gen) * sqrt(abs(numPulse));	// Absolute variation
 	}
+	
+	/* Update for the resistance drift effect */
+	driftCoef = driftCoefZero + (driftSlope * log10(driftConductanceZero / conductanceNew));
+	conductanceNew = conductanceNew * pow((driftTimeZero / driftTime), driftCoef);
 	
 	if (conductanceNew > maxConductance) {
 		conductanceNew = maxConductance;
