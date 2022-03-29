@@ -132,18 +132,23 @@ int main() {
     	WeightToConductance();
 	srand(0);	// Pseudorandom number seed
 	
+	/* Storing results to the file */
 	ofstream mywriteoutfile;
-	mywriteoutfile.open("output.csv");                                                                                                            
+	mywriteoutfile.open("accuracy.csv");                                                                                                            
 	for (int i=1; i<=param->totalNumEpochs/param->interNumEpochs; i++){
 		Train(param->numTrainImagesPerEpoch, param->interNumEpochs,param->optimization_type);
 		if (!param->useHardwareInTraining && param->useHardwareInTestingFF) { WeightToConductance(); }
 		Validate();
+		
         if (HybridCell *temp = dynamic_cast<HybridCell*>(arrayIH->cell[0][0]))
             WeightTransfer();
         else if(_2T1F *temp = dynamic_cast<_2T1F*>(arrayIH->cell[0][0]))
             WeightTransfer_2T1F();
                 
 		mywriteoutfile << i*param->interNumEpochs << ", " << (double)correct/param->numMnistTestImages*100 << endl;
+		if (i == param->totalNumEpochs/param->interNumEpochs) {
+			PrintWeightToFile("weight_dist")
+		}
 		
 		printf("Accuracy at %d epochs is : %.2f%\n", i*param->interNumEpochs, (double)correct/param->numMnistTestImages*100);
 		/* Here the performance metrics of subArray also includes that of neuron peripheries (see Train.cpp and Test.cpp) */
