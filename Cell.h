@@ -178,6 +178,13 @@ public:
 	double paramBLTD;	// Parameter B for LTD nonlinearity
 	double sigmaDtoD;	// Sigma of device-to-device variation on weight update nonliearity baseline
 	double sigmaCtoC;	// Sigma of cycle-to-cycle variation on weight update
+	/* Update for the resistance drift effect */
+	double driftSlope;	// Drift Slope(k)
+	double driftConductanceZero;	// Standard Conductance(G0)
+	double driftTimeZero;	// Standard Time(t0)
+	double driftTime; // Elapsed Time(t)
+	double driftCoefZero;	// Drift Coefficient(v0) when time = t0
+	double driftCoef;	// Drift Coefficient(v) when elapsed time = t
 
 	RealDevice(int x, int y);
 	double Read(double voltage);	// Return read current (A)
