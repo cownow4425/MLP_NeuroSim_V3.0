@@ -411,8 +411,8 @@ void RealDevice::Write(double deltaWeightNormalized, double weight, double minWe
 	/* C2C variation in the resistance drift effect */
 	if (driftSigmaCtoC > 0) {
 		driftSigmaCtoC *= 0.0406;	// the mean of drift coefficient = 0.0406
-		gaussian_dist_driftCtoC = new std::normal_distribution<double>(0, driftSigmaCtoC);
-		driftCoef += (*gaussian_dist_driftCtoC)(gen);
+		gaussian_dist4 = new std::normal_distribution<double>(0, driftSigmaCtoC);
+		driftCoef += (*gaussian_dist4)(gen);
 	}
 	if (driftCoef < 0) {
 		driftCoef = 0;
