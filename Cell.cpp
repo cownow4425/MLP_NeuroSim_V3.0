@@ -282,12 +282,12 @@ RealDevice::RealDevice(int x, int y) {
 	NL = 10;    // I-V nonlinearity in write scheme (the current ratio between Vw and Vw/2), assuming for the LTP side
 	
 	/* Update for the resistance drift effect */
-	double driftSlope = 0.166;	// Drift Slope(k)
-	double driftConductanceZero = minConductance;	// Standard Conductance(G0)
-	double driftTimeZero = 0.001;	// Standard Time(t0)
-	double driftTime = 0.1; // Elapsed Time(t)
-	double driftCoefZero = 0.1;	// Drift Coefficient(v0) when time = t0
-	double driftCoef = 0;	// Drift Coefficient(v) when elapsed time = t
+	driftSlope = 0.166;	// Drift Slope(k)
+	driftConductanceZero = minConductance;	// Standard Conductance(G0)
+	driftTimeZero = 0.001;	// Standard Time(t0)
+	driftTime = 0.1; // Elapsed Time(t)
+	driftCoefZero = 0.1;	// Drift Coefficient(v0) when time = t0
+	driftCoef = 0;	// Drift Coefficient(v) when elapsed time = t
 	
 	
 	if (nonlinearIV) {  // Currently for cross-point array only
