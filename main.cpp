@@ -147,7 +147,7 @@ int main() {
                 
 		mywriteoutfile << i*param->interNumEpochs << ", " << (double)correct/param->numMnistTestImages*100 << endl;
 		if (i == param->totalNumEpochs/param->interNumEpochs) {
-			PrintWeightToFile("weight_dist")
+			PrintWeightToFile("weight_dist");
 		}
 		
 		printf("Accuracy at %d epochs is : %.2f%\n", i*param->interNumEpochs, (double)correct/param->numMnistTestImages*100);
