@@ -288,7 +288,7 @@ RealDevice::RealDevice(int x, int y) {
 	driftTime = 1; // Elapsed Time(t)
 	driftCoefZero = 0.1;	// Drift Coefficient(v0) when time = t0
 	driftCoef = 0;	// Drift Coefficient(v) when elapsed time = t
-	driftSigmaCtoC = 0.4;
+	driftSigmaCtoC = 0.1;
 	driftSigmaDtoD = 0;
 	
 	
@@ -411,7 +411,7 @@ void RealDevice::Write(double deltaWeightNormalized, double weight, double minWe
 	/* C2C variation in the resistance drift effect */
 	if (driftSigmaCtoC > 0) {
 		driftSigmaCtoC *= 0.0406;	// the mean of drift coefficient = 0.0406
-		gaussian_dist4 = new std::normal_distribution<double>(0, driftSigmaCtoC);
+		gaussian_dist4 = new std::normal_distribution<double>(0.0406, driftSigmaCtoC);
 		driftCoef += (*gaussian_dist4)(gen);
 	}
 	if (driftCoef < 0) {
