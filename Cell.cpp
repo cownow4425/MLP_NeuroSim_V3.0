@@ -288,7 +288,7 @@ RealDevice::RealDevice(int x, int y) {
 	driftTime = 1; // Elapsed Time(t)
 	driftCoefZero = 0.1;	// Drift Coefficient(v0) when time = t0
 	driftCoef = 0;	// Drift Coefficient(v) when elapsed time = t
-	driftSigmaCtoC = 0.1;
+	driftSigmaCtoC = 0.2;
 	driftSigmaDtoD = 0;
 	
 	
