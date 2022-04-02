@@ -289,7 +289,7 @@ RealDevice::RealDevice(int x, int y) {
 	driftCoefZero = 0.1;	// Drift Coefficient(v0) when time = t0
 	driftCoef = 0;	// Drift Coefficient(v) when elapsed time = t
 	driftSigmaCtoC = 0;
-	driftSigmaDtoD = 0.05;
+	driftSigmaDtoD = 0.1;
 // 	driftRmin = 2.10e+5;
 	
 	if (nonlinearIV) {  // Currently for cross-point array only
