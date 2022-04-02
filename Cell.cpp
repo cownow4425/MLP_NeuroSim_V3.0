@@ -288,8 +288,8 @@ RealDevice::RealDevice(int x, int y) {
 	driftTime = 1; // Elapsed Time(t)
 	driftCoefZero = 0.1;	// Drift Coefficient(v0) when time = t0
 	driftCoef = 0;	// Drift Coefficient(v) when elapsed time = t
-	driftSigmaCtoC = 0.1;
-	driftSigmaDtoD = 0;
+	driftSigmaCtoC = 0;
+	driftSigmaDtoD = 0.05;
 	
 	
 	if (nonlinearIV) {  // Currently for cross-point array only
@@ -317,6 +317,14 @@ RealDevice::RealDevice(int x, int y) {
 
 	std::mt19937 localGen;	// It's OK not to use the external gen, since here the device-to-device vairation is a one-time deal
 	localGen.seed(std::time(0));
+	
+	/* Update for the resistance drift effect D2D variation */
+	if (driftSigmaDtoD > 0) {
+		driftSigmaDtoD *= 0.0406;
+	}
+	gaussian_dist5 = new std::normal_distribution<double>(0.0406, driftSigmaDtoD);
+	
+	
 	
 	/* Device-to-device weight update variation */
 	NL_LTP = 2.4;	// LTP nonlinearity
@@ -408,6 +416,10 @@ void RealDevice::Write(double deltaWeightNormalized, double weight, double minWe
 	
 	/* Update for the resistance drift effect */
 	driftCoef = driftCoefZero + (driftSlope * log10(driftConductanceZero / conductanceNew));
+	/* D2D variation in the resistance drift effect */
+	if (driftSigmaDtoD > 0) {
+		driftCoef += (*gaussian_dist5)(localGen);
+	}
 	/* C2C variation in the resistance drift effect */
 	if (driftSigmaCtoC > 0) {
 		driftSigmaCtoC *= 0.0406;	// the mean of drift coefficient = 0.0406
