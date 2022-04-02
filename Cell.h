@@ -187,6 +187,7 @@ public:
 	double driftCoef;	// Drift Coefficient(v) when elapsed time = t
 	double driftSigmaCtoC;	// SigmaCtoC in the resistance drift effect
 	double driftSigmaDtoD;	// SigmaDtoD in the resistance drift effect
+	double driftRmin; 	// Rmin when the resistance drift D2D varication is applied.
 
 	RealDevice(int x, int y);
 	double Read(double voltage);	// Return read current (A)
