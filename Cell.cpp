@@ -290,7 +290,7 @@ RealDevice::RealDevice(int x, int y) {
 	driftCoef = 0;	// Drift Coefficient(v) when elapsed time = t
 	driftSigmaCtoC = 0;
 	driftSigmaDtoD = 0.05;
-	driftRmin = 2.10e+5;
+// 	driftRmin = 2.10e+5;
 	
 	if (nonlinearIV) {  // Currently for cross-point array only
 		double Vr_exp = readVoltage;  // XXX: Modify this value to Vr in the reported measurement data (can be different than readVoltage)
@@ -319,12 +319,16 @@ RealDevice::RealDevice(int x, int y) {
 	localGen.seed(std::time(0));
 	
 	/* Update for the resistance drift effect D2D variation */
-	gaussian_dist6 = new std::normal_distribution<double>(2.10e+5, (2.10e+5)*driftSigmaDtoD);
-	gaussian_dist7 = new std::normal_distribution<double>(0.1, (0.1)*driftSigmaDtoD);
+// 	gaussian_dist6 = new std::normal_distribution<double>(2.10e+5, (2.10e+5)*driftSigmaDtoD);
+// 	gaussian_dist7 = new std::normal_distribution<double>(0.1, (0.1)*driftSigmaDtoD);
+// 	if (driftSigmaDtoD > 0) {
+// 		driftRmin = (*gaussian_dist6)(localGen);
+// 		driftCoefZero = (*gaussian_dist7)(localGen);
+// 		driftSlope = (driftCoefZero - 0.0) / (log10((2e+6)/(driftRmin)));
+// 	}
 	if (driftSigmaDtoD > 0) {
-		driftRmin = (*gaussian_dist6)(localGen);
-		driftCoefZero = (*gaussian_dist7)(localGen);
-		driftSlope = (driftCoefZero - 0.0) / (log10((2e+6)/(driftRmin)));
+		gaussian_dist6 = new std::normal_distribution<double>(0.2, 0.2*driftSigmaDtoD);
+		driftSlope = (*gaussian_dist6)(localGen);
 	}
 	
 	
