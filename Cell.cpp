@@ -324,7 +324,7 @@ RealDevice::RealDevice(int x, int y) {
 	if (driftSigmaDtoD > 0) {
 		driftRmin = (*gaussian_dist6)(localGen);
 		driftCoefZero = (*gaussian_dist7)(localGen);
-		driftSlope = (driftCoefZero - 0.0) / (log10((2e+6)/(driftRmin));
+		driftSlope = (driftCoefZero - 0.0) / (log10((2e+6)/(driftRmin)));
 	}
 	
 	
