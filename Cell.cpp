@@ -323,7 +323,7 @@ RealDevice::RealDevice(int x, int y) {
 	gaussian_dist6 = new std::normal_distribution<double>(0.1, 0.1*driftSigmaDtoD);
 	if (driftSigmaDtoD > 0) {
 		driftRmin = (*gaussian_dist5)(localGen);
-		driftCoefZero = (*gaussian_dist6)(*localGen);
+		driftCoefZero = (*gaussian_dist6)(localGen);
 		driftSlope = (driftCoefZero - 0.0) / (log10((1/driftConductanceZero)) - log10(driftRmin));
 	}
 	
