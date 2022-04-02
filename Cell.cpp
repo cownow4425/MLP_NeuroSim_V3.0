@@ -319,11 +319,11 @@ RealDevice::RealDevice(int x, int y) {
 	localGen.seed(std::time(0));
 	
 	/* Update for the resistance drift effect D2D variation */
-	gaussian_dist5 = new std::normal_distribution<double>(1/maxConductance, (1/maxConductance)*driftSigmaDtoD);
-	gaussian_dist6 = new std::normal_distribution<double>(0.1, 0.1*driftSigmaDtoD);
+	gaussian_dist6 = new std::normal_distribution<double>(1/maxConductance, (1/maxConductance)*driftSigmaDtoD);
+	gaussian_dist7 = new std::normal_distribution<double>(0.1, 0.1*driftSigmaDtoD);
 	if (driftSigmaDtoD > 0) {
-		driftRmin = (*gaussian_dist5)(localGen);
-		driftCoefZero = (*gaussian_dist6)(localGen);
+		driftRmin = (*gaussian_dist6)(localGen);
+		driftCoefZero = (*gaussian_dist7)(localGen);
 		driftSlope = (driftCoefZero - 0.0) / (log10((1/driftConductanceZero)) - log10(driftRmin));
 	}
 	
